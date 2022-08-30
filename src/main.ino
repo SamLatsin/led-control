@@ -3,25 +3,25 @@
     #include "gfx_fonts/GlametrixLight12pt7b.h"
     #include "gfx_fonts/GlametrixBold12pt7b.h"
     
-    // Используется шина SPI 2   
+    // SPI bus 2 is used 
     SPIClass dmd_spi(1);
-    // serial-порт к которому подключён Wi-Fi модуль
+    // serial port to which the Wi-Fi module is connected
     #define WIFI_SERIAL    Serial2
-    // выбор количества LED модулей
+    // choice of the number of LED modules
     #define DISPLAYS_ACROSS 3
     #define DISPLAYS_DOWN 1
-    // Выбор пинов матрицы
+    // Matrix pin selection
     #define DMD_PIN_A PB11
     #define DMD_PIN_B PB12
     #define DMD_PIN_nOE PB1
     #define DMD_PIN_SCLK PB10
     
     DMD dmd(DMD_PIN_A, DMD_PIN_B, DMD_PIN_nOE, DMD_PIN_SCLK, DISPLAYS_ACROSS, DISPLAYS_DOWN, dmd_spi );
-    // выбор шрифтов
+    // font selection
     DMD_Standard_Font UkrRusArial_F(UkrRusArial_14);
     DMD_GFX_Font GlametrixBold((uint8_t*)&GlametrixBold12pt7b,(uint8_t*)&GlametrixBold12pt8b_rus, 0x80, 13); 
 
-    // функция конвертации текста
+    // text conversion function
     int utf8_rus(char* dest, String src) {
       uint8_t i, j;
       for ( i =0, j =0; src[i]; i++) {
@@ -33,14 +33,14 @@
       return j;
     }
 
-    // функция выполнения команды
+    // command execution function
     void execute_command(String cmd, int t)
     {
       Serial2.println(cmd);
       delay(t);
     }
 
-    // функция запуска точки доступа
+    // hotspot trigger function
     void host_ap()
     {
       execute_command("AT",100);
@@ -52,13 +52,13 @@
       execute_command("AT+CIFSR", 100);
     }
 
-    // функция смены яркости
+    // brightness change function
     void change_brightness(int brightness)
     {
       dmd.setBrightness(brightness);
     }
 
-    // функция смены строки
+    // String change function
     void change_string(String new_string)
     {
       dmd.clearScreen( true );
@@ -69,46 +69,46 @@
     
     void setup()
     {
-      // открываем последовательный порт для мониторинга действий в программе
-      // и передаём скорость 9600 бод
+      // open a serial port to monitor actions in the program
+      // and transmit the speed of 9600 baud
       dmd.init();
-      dmd.clearScreen( true );   //выключить все пиксели
-      // установка яркости матрицы (0-255)
+      dmd.clearScreen( true );   // turn off all pixels
+      // setting the brightness of the matrix (0-255)
       dmd.setBrightness(20);
       Serial.begin(9600);
       Serial.print("Serial init OK\r\n");
-      // открываем Serial-соединение с Wi-Fi модулем на скорости 115200 бод
+      // open Serial connection with Wi-Fi module at 115200 baud
       WIFI_SERIAL.begin(9600);
-      // создание точки доступа
+      // creating an access point
       host_ap();
     }
      
     void loop()
     {
-      // выбор изначальной строки для отображения при запуске
-      String m = "ТЕСТОВАЯ СТРОКА!";
+      // select initial string to display at startup
+      String m = "TEST STRING!";
       char k[30];
       dmd.selectFont(&GlametrixBold);
-      // конвертация текста
+      // text conversion
       utf8_rus(k,m);
       dmd.drawMarquee(k,strlen(k),(32*DISPLAYS_ACROSS)-1,0);
       long prev_step = millis();
-      // установка начальной скорости отображения бегущей строки
+      // setting the initial speed of the ticker display
       int draw_speed = 30;
-      // начало основного цикла
+      // start of the main loop
       while(1){
-        // сдвиг строки с заданной скоростью
+        // line shift at a given speed
          if ((millis() - prev_step) > draw_speed ) {
            dmd.stepMarquee(-1,0);
            prev_step=millis();
          }
-         // если приходят данные из Wi-Fi модуля - отправим их в порт компьютера
+         // if data comes from the Wi-Fi module, we will send it to the computer port
          if (WIFI_SERIAL.available()) {
            String str = WIFI_SERIAL.readString();
-           // распознование поступившей команды
+           // command recognition
            if (str.startsWith("\r\n+IPD")) {
              String cmd = str.substring(str.indexOf(':')+1);
-             // если поступила команда смены строки
+             // if a line change command is received
              if(cmd.startsWith("/change_string("))
              {
                Serial.println("Choosing new string:");
@@ -116,7 +116,7 @@
                change_string(new_string);
                Serial.println(new_string);
              }
-             // если поступила команда смены яркости
+             // if a brightness change command is received
              if(cmd.startsWith("/change_brightness("))
              {
                Serial.println("Changing brightness to:");
@@ -124,7 +124,7 @@
                change_brightness(brightness);
                Serial.println(cmd.substring(cmd.indexOf('(')+1, cmd.indexOf(')')));
              }
-             // если поступила команда смены скорости
+             // if a speed change command is received
              if(cmd.startsWith("/change_speed("))
              {
                Serial.println("Changing brightness to:");
@@ -133,7 +133,7 @@
              }
            } 
          }
-        // если приходят данные из компьютера - отправим их в Wi-Fi модуль
+        // if data comes from the computer - send it to the Wi-Fi module
         if (Serial.available()) {
           WIFI_SERIAL.write(Serial.read());
         }
