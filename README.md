@@ -47,6 +47,20 @@ PORT = 8888
 ```
 ### Screenshots
 
+<p float="left">
+  <img src="https://github.com/SamLatsin/led-control/blob/main/screenshots/1.jpg" width="33%" />
+  <img src="https://github.com/SamLatsin/led-control/blob/main/screenshots/2.jpg" width="20.5%" />
+  <img src="https://github.com/SamLatsin/led-control/blob/main/screenshots/3.jpg" width="54%" />
+</p>
+
+### Gifs
+
+<p float="left">
+  <img src="https://github.com/SamLatsin/led-control/blob/main/screenshots/1.gif" width="33%" />
+  <img src="https://github.com/SamLatsin/led-control/blob/main/screenshots/2.gif" width="33%" />
+  <img src="https://github.com/SamLatsin/led-control/blob/main/screenshots/4.gif" width="33%" />
+</p>
+
 ## License
 
 led-control is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
