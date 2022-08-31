@@ -15,6 +15,10 @@ You can control your matrix via Wi-Fi connection, `.apk` app is included in this
 * Brigtness control
 * Ability to change text
 ## Getting Started
+### Socket commands
+* /change_brightness(value) - change brightness of matrices, range 0-255 (0 - will go out)
+* /change_speed(value) - change speed of text, range 0-100 (0 - stop text)
+* /change_string(value) - change matrix text, maximum length is 32 chars
 ### Requirements
 * STM32F1 (bluepill) or STM32F4
 * ESP-01 Wi-Fi module
@@ -33,9 +37,9 @@ After that you should build a wiring diagram:
   <img src="https://github.com/SamLatsin/led-control/blob/main/screenshots/circuit-diagram.jpg" width="50%" />
 </p>
 
-Then plug the device into a socket. It will automatically create Wi-Fi with SSID LED CONTROL. 
+Then plug the device into a socket. It will automatically create Wi-Fi with SSID LED_CONTROL. Password is `1234567890`, you can change this in `led-control/src/main.ino`
 
-Install android app to your phone from `led-control/apk/Led_Control.apk`, connect to Wi-Fi LED CONTROL and run the app. It will automatically connect to ESP-01 module and now you can control your LED matrices. Default connection details:
+Install android app to your phone from `led-control/apk/Led_Control.apk`, connect to Wi-Fi LED_CONTROL and run the app. It will automatically connect to ESP-01 module and now you can control your LED matrices. Default connection details:
 
 ```
 IP = 192.168.4.1
