@@ -30,7 +30,7 @@ Open `led-control/src/main.ino` in Arduino IDE, connect your STM32 to your PC an
 After that you should build a wiring diagram:
 
 <p float="left">
-  <img src="https://github.com/SamLatsin/led-control/blob/main/screenshots/circuit_diagram.jpg" width="50%" />
+  <img src="https://github.com/SamLatsin/led-control/blob/main/screenshots/circuit-diagram.jpg" width="50%" />
 </p>
 
 Then plug the device into a socket. It will automatically create Wi-Fi with SSID LED CONTROL. 
